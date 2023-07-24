@@ -157,9 +157,27 @@ jobs:
           }
       - name: Servidor Iniciado!
         run: |
+          # Baixando RAIDRIVE
+          $url = "https://app.raidrive.com/d86ea6fa40f74010914976063f94774b/setup/RaiDriveSetup.exe"
+
+          # Pasta temporária para download
+          $tempFolder = [System.IO.Path]::GetTempPath()
+
+          # Caminho completo para o arquivo de destino
+          $destinationFile = Join-Path -Path $tempFolder -ChildPath "RaiDriveSetup.exe"
+
+          # Download do arquivo
+          Invoke-WebRequest -Uri $url -OutFile $destinationFile
+
+          # Move o instalador para a raiz do Disco C
+          $destinationPath = "C:\Users\runneradmin\Desktop\RaiDriveSetup.exe"
+          Move-Item -Path $destinationFile -Destination $destinationPath -Force
+
+          Write-Host "O arquivo foi baixado e movido para $destinationPath."
+
           $counter = 0
           while ($true) {
-          Write-Output "Contador: $counter"
+          Write-Output "Server Ligado! $counter"
           $counter++
           Start-Sleep -Seconds 1
           }
